@@ -1,0 +1,60 @@
+{
+  "gcp": {
+    "bucket": "covid-mvmnt-2024",
+    "project": "covid-mvmnt-2024-440720",
+    "service_account": "/app/gee_sa.txt"
+  },
+  "paths": {
+    "conda_env": "anno_env",
+    "wd": "/app",
+    "db": "/app/data/input.db",
+    "input_dir": "ingest_gee_mortality_testing",
+    "output_dir": "annotated_mortality_testing",
+    "key_file": "/app/covid-mvmnt-2024-key-file.json",
+    "genera_path": "/app/ctfs/genus.txt",
+    "csvP": "/app/gee_data/csvs_gee_ingest",
+    "annoP": "/app/gee_data/annotated"
+  },
+  "gee": {
+    "assets_folder": "/app/gee_af.txt",
+    ".entity": "genus",
+    "_colImageId": "image_id",
+    "_colMillis": "millis",
+    "_colTimestamp": "timestamp",
+    "_colTimestamp_hfp": "timestamp_hfp",
+    "groupSize" : 100000,
+
+    "collections": [
+      {
+        "name": "ECMWF/ERA5/DAILY",
+        "band": "maximum_2m_air_temperature",
+        "colname": "tmax",
+        "run": 1
+      },
+      {
+        "name": "MODIS/MOD09GA_006_NDVI",
+        "band": "NDVI",
+        "colname": "ndvi",
+        "run": 0
+      },
+      {
+        "name": "COPERNICUS/DEM/GLO30",
+        "band": "DEM",
+        "colname": "elev",
+        "run": 0
+      },
+      {
+        "name": "ECMWF/ERA5/DAILY",
+        "band": "total_precipitation",
+        "colname": "precip",
+        "run": 0
+      },
+      {
+        "name": "projects/HII/v1/hii",
+        "band": "hii",
+        "colname": "hfp",
+        "run": 0
+      }
+    ]
+  }
+}
