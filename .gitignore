@@ -47,3 +47,31 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+
+# --- Docker ---
+# Ignore Docker build artifacts
+*.pid
+*.seed
+*.log
+.dockerignore
+docker-compose.override.yml
+docker-compose.local.yml
+
+data/
+
+
