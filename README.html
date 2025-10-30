@@ -465,14 +465,14 @@ manager</a></li>
 </thead>
 <tbody>
 <tr class="odd">
-<td>ECMWF/ERA5/DAILY</td>
+<td><a href="https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_DAILY">ECMWF/ERA5/DAILY</a></td>
 <td>maximum_2m_air_temperature</td>
 <td>2</td>
 <td>tmax</td>
 <td>units = Kelvin, pixel size = 27830 meters</td>
 </tr>
 <tr class="even">
-<td>MODIS/MOD09GA_006_NDVI</td>
+<td><a href="https://developers.google.com/earth-engine/datasets/catalog/MODIS_MOD09GA_006_NDVI">MODIS/MOD09GA_006_NDVI</a></td>
 <td>NDVI</td>
 <td>0</td>
 <td>ndvi</td>
@@ -487,14 +487,16 @@ manager</a></li>
 = 30 meters, split up into tiles spatially. This dataset is timeless for
 our purposes, but has underlying timestamp metadata per individual image
 that is interpretable and filtered under the hood by default. Therefore
-this dataset must be mosaic’d for processing to ignore time.</td>
+this dataset must be mosaic’d for processing to ignore time. Filter out
+negative values after annotation.</td>
 </tr>
 <tr class="even">
 <td><a href="https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_DAILY">ECMWF/ERA5/DAILY</a></td>
 <td>total_precipitation</td>
 <td>4</td>
 <td>precip</td>
-<td>units = meters, daily sums of total precipitation</td>
+<td>units = meters, daily sums of total precipitation. Filter out
+negative values after annotation.</td>
 </tr>
 <tr class="odd">
 <td>projects/HII/v1/hii</td>
@@ -504,7 +506,7 @@ this dataset must be mosaic’d for processing to ignore time.</td>
 <td>Custom collection created by <a href="https://www.wcs.org/">Wildlife
 Convervation Society</a>, see GEE layers displayed <a href="https://code.earthengine.google.com/f904097220e577cad2e0dc5379371c91">here</a>
 and <a href="https://www.wcshumanfootprint.org/data-access">data
-description</a>. One image per year 2021-2020 that encompasses January 1
+description</a>. One image per year 2001-2020 that encompasses January 1
 - December 31. But because the timestamps are specifically for the
 single day 1/1/YYYY and have no inherent end date for 12/31, we must
 both create a specific timestamp attribute in the event data for this

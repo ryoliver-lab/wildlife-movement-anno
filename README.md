@@ -63,11 +63,11 @@ These have already been installed in the built Docker image:
 
 env ID | band ID | band index | col_name | details
 -- | -- | -- | -- | --
-ECMWF/ERA5/DAILY | maximum_2m_air_temperature | 2 | tmax | units = Kelvin, pixel size = 27830 meters
-MODIS/MOD09GA_006_NDVI | NDVI | 0 | ndvi | pixel size = 463.313 meters
-[COPERNICUS/DEM/GLO30](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30) | DEM | 0 | elev | digital elevation model, units = meters above sea level, resolution = 30 meters, split up into tiles spatially. This dataset is timeless for our purposes, but has underlying timestamp metadata per individual image that is interpretable and filtered under the hood by default. Therefore this dataset must be mosaic'd for processing to ignore time.
-[ECMWF/ERA5/DAILY](https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_DAILY) | total_precipitation | 4 | precip | units = meters, daily sums of total precipitation
-projects/HII/v1/hii | human_impact_index | 0 | hfp | Custom collection created by [Wildlife Convervation Society](https://www.wcs.org/), see GEE layers displayed [here](https://code.earthengine.google.com/f904097220e577cad2e0dc5379371c91) and [data description](https://www.wcshumanfootprint.org/data-access). One image per year 2021-2020 that encompasses January 1 - December 31. But because the timestamps are specifically for the single day 1/1/YYYY and have no inherent end date for 12/31, we must both create a specific timestamp attribute in the event data for this layer and add the property for time end to the image collection.
+[ECMWF/ERA5/DAILY](https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_DAILY) | maximum_2m_air_temperature | 2 | tmax | units = Kelvin, pixel size = 27830 meters
+[MODIS/MOD09GA_006_NDVI](https://developers.google.com/earth-engine/datasets/catalog/MODIS_MOD09GA_006_NDVI) | NDVI | 0 | ndvi | pixel size = 463.313 meters
+[COPERNICUS/DEM/GLO30](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_DEM_GLO30) | DEM | 0 | elev | digital elevation model, units = meters above sea level, resolution = 30 meters, split up into tiles spatially. This dataset is timeless for our purposes, but has underlying timestamp metadata per individual image that is interpretable and filtered under the hood by default. Therefore this dataset must be mosaic'd for processing to ignore time. Filter out negative values after annotation.
+[ECMWF/ERA5/DAILY](https://developers.google.com/earth-engine/datasets/catalog/ECMWF_ERA5_DAILY) | total_precipitation | 4 | precip | units = meters, daily sums of total precipitation. Filter out negative values after annotation.
+projects/HII/v1/hii | human_impact_index | 0 | hfp | Custom collection created by [Wildlife Convervation Society](https://www.wcs.org/), see GEE layers displayed [here](https://code.earthengine.google.com/f904097220e577cad2e0dc5379371c91) and [data description](https://www.wcshumanfootprint.org/data-access). One image per year 2001-2020 that encompasses January 1 - December 31. But because the timestamps are specifically for the single day 1/1/YYYY and have no inherent end date for 12/31, we must both create a specific timestamp attribute in the event data for this layer and add the property for time end to the image collection.
 
 
 ### Notes:
