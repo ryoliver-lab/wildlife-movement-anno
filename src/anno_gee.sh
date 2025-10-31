@@ -108,7 +108,7 @@ do
     
     echo Annotating "env: ${envs[$i]}, band: ${bands[$i]}, col name: ${colnames[$i]}"
     # $MOSEYENV_SRC/gee_anno.r $points ${envs[$i]} $out -b ${bands[$i]} -c ${colnames[$i]}
-    $MOSEYENV_SRC/gee_anno.py $points $out $gen ${envs[$i]} ${colnames[$i]} ${bands[$i]} #&> logs/GEE_anno.log
+    gee_anno.py $points $out $gen ${envs[$i]} ${colnames[$i]} ${bands[$i]} #&> logs/GEE_anno.log
   done
 
 done

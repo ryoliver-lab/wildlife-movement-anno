@@ -8,8 +8,9 @@ Annotate wildlife movement tracks with environmental layers from Google Earth En
 
 - Create GEE project.
   - Add a service account key: In the [Google Cloud Console](https://console.cloud.google.com), navigate to the Service Accounts tab in the left panel, then click the email for the service account. Select the Keys tab and select "Add key" and download the json file. See [Google's documentation](https://cloud.google.com/iam/docs/keys-create-delete#creating). This key allows for authentication within scripts without user input.
-  - Add permission to access project's assets: In the console, navigate to the Service Account tab in the left panel and click the email for the service account. Select the Permissions tab, then select Manage Access. Add a role for "Earth Engine Resource Admin".
+  - Add permission to access project's assets: In the console, navigate to the Service Account tab in the left panel and click the email for the service account. Select the Permissions tab, then select Manage Access. Add a role for `Earth Engine Resource Admin`
 - Create a bucket in [Google Cloud Storage](https://console.cloud.google.com/storage).
+  - Add roles for your bucket: On the homepage for your bucket, navigate to the Permissions tab and select Grant Access. Enter your service account email in the box labeled "New principals" and assign the following four roles: `Storage Admin`, `Storage Object Admin`, `Storage Object Creator`, `Storage Object Viewer`
 
 ### Config
 

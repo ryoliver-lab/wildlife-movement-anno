@@ -374,10 +374,18 @@ without user input.</li>
 <li>Add permission to access project’s assets: In the console, navigate
 to the Service Account tab in the left panel and click the email for the
 service account. Select the Permissions tab, then select Manage Access.
-Add a role for “Earth Engine Resource Admin”.</li>
+Add a role for <code>Earth Engine Resource Admin</code></li>
 </ul></li>
 <li>Create a bucket in <a href="https://console.cloud.google.com/storage">Google Cloud
-Storage</a>.</li>
+Storage</a>.
+<ul>
+<li>Add roles for your bucket: On the homepage for your bucket, navigate
+to the Permissions tab and select Grant Access. Enter your service
+account email in the box labeled “New principals” and assign the
+following four roles: <code>Storage Admin</code>,
+<code>Storage Object Admin</code>, <code>Storage Object Creator</code>,
+<code>Storage Object Viewer</code></li>
+</ul></li>
 </ul>
 </div>
 <div id="config" class="section level3">

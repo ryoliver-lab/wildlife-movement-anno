@@ -133,11 +133,11 @@ do
   
   #---- Upload file to GCS
   echo Uploading file to GCS...
-  gsutil -q cp -r $csv $gcsCSV
+  gcloud storage cp -r "$csv" "$gcsCSV"
 
   #---- Import file into GEE
   echo Starting GEE import task...
-  earthengine upload table  --asset_id $geePts $gcsCSV --x_column lon --y_column lat --force
+  earthengine --service_account_file="$sak" upload table  --asset_id $geePts $gcsCSV --x_column lon --y_column lat --force
 
   #---- Cleanup
   rm -f $csv
