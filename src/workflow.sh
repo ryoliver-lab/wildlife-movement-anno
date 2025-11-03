@@ -72,7 +72,7 @@ bash ./gee_ingest.sh trial_1 $geePtsP $gcsInURL $csvP $groupSize
 # check for running or queued ingest tasks at an interval, units = seconds
 checkInterval=10
 
-while [ $(earthengine task list | grep -e "RUNNING" -e "READY" | wc -l) -gt 0 ]; do
+while [ $(earthengine --service_account_file="$sak" task list | grep -e "RUNNING" -e "READY" | wc -l) -gt 0 ]; do
     echo "Tasks still running or queued at $(date)"
     sleep $checkInterval
 done
@@ -86,7 +86,7 @@ bash ./anno_gee.sh $geePtsP $gcsOutP
 # check for running or queued annotation tasks
 checkInterval=300
 
-while [ $(earthengine task list | grep -e "RUNNING" -e "READY" | wc -l) -gt 0 ]; do
+while [ $(earthengine --service_account_file="$sak" task list | grep -e "RUNNING" -e "READY" | wc -l) -gt 0 ]; do
     echo "Tasks still running or queued at $(date)"
     sleep $checkInterval
 done
