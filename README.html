@@ -376,9 +376,10 @@ to the Service Account tab in the left panel and click the email for the
 service account. Select the Permissions tab, then select Manage Access.
 Add a role for <code>Earth Engine Resource Admin</code></li>
 </ul></li>
-<li>Create a bucket in <a href="https://console.cloud.google.com/storage">Google Cloud
-Storage</a>.
+<li>Create a bucket in <a href="https://console.cloud.google.com/storage">Google Cloud Storage</a>
 <ul>
+<li>Create two subdirectories, one for storing GPS data pre-annotation,
+and the other for storing the annotated GPS data</li>
 <li>Add roles for your bucket: On the homepage for your bucket, navigate
 to the Permissions tab and select Grant Access. Enter your service
 account email in the box labeled “New principals” and assign the
@@ -391,14 +392,27 @@ following four roles: <code>Storage Admin</code>,
 <div id="config" class="section level3">
 <h3>Config</h3>
 <ul>
-<li>modify the config as necessary, such as env layers</li>
+<li>modify the config as necessary, such as environmental layers and the
+names of the bucket subdirectories</li>
 </ul>
 </div>
 <div id="database" class="section level3">
 <h3>Database</h3>
+<p>Ensure input database meets the following requirements:</p>
 <ul>
-<li>ensure input database meets the requirements such as table and
-attribute names</li>
+<li>GPS event table is called “event”</li>
+<li>latitude and logitude are in degrees and called “lat” and “lon”</li>
+<li>timestamps are all in consistent format “%Y-%m-%d %H:%M:%S” and
+attrbiute is called “timestamp”
+<ul>
+<li>HH:MM:SS is not necessary to include, but if timestamps lack the
+time component then they will be appended with 00:00:00</li>
+</ul></li>
+<li>boolean attrbiute <code>is_death_centroid</code></li>
+<li>datetime attribute <code>final_gps_location_datetime</code> (can
+drop this prior to annotation next time)</li>
+<li>date attribute <code>final_gps_location_date</code> (can drop this
+prior to annotation next time)</li>
 </ul>
 </div>
 <div id="run-container" class="section level3">

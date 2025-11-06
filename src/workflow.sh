@@ -117,7 +117,7 @@ bash ./import_anno.sh $gcsOutURL $annoP $db --table event
 sqlite3 $db "CREATE TABLE death_centroids AS SELECT * FROM event WHERE is_death_centroid = 1;"
 # drop death centroid points from event table
 sqlite3 $db "DELETE FROM event WHERE is_death_centroid = 1;"
-# drop columns that were appended when combined death centroid df $ event table
+# drop columns that were appended when combined death centroid df & event table
 # and are no longer needed. Note that final GPS date/times for events are 
 # stored in the animal metadata table
 sqlite3 $db "ALTER TABLE event DROP COLUMN is_death_centroid;"

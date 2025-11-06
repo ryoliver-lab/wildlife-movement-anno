@@ -47,4 +47,4 @@ COPY src/ /app/src/
 RUN chmod +x /app/src/workflow.sh
 
 # run bash workflow as the default execution
-#ENTRYPOINT ["/bin/bash", "/app/src/workflow.sh"]
+ENTRYPOINT ["/bin/bash", "/app/src/workflow.sh"]

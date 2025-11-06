@@ -9,16 +9,26 @@ Annotate wildlife movement tracks with environmental layers from Google Earth En
 - Create GEE project.
   - Add a service account key: In the [Google Cloud Console](https://console.cloud.google.com), navigate to the Service Accounts tab in the left panel, then click the email for the service account. Select the Keys tab and select "Add key" and download the json file. See [Google's documentation](https://cloud.google.com/iam/docs/keys-create-delete#creating). This key allows for authentication within scripts without user input.
   - Add permission to access project's assets: In the console, navigate to the Service Account tab in the left panel and click the email for the service account. Select the Permissions tab, then select Manage Access. Add a role for `Earth Engine Resource Admin`
-- Create a bucket in [Google Cloud Storage](https://console.cloud.google.com/storage).
+- Create a bucket in [Google Cloud Storage](https://console.cloud.google.com/storage)
+  - Create two subdirectories, one for storing GPS data pre-annotation, and the other for storing the annotated GPS data
   - Add roles for your bucket: On the homepage for your bucket, navigate to the Permissions tab and select Grant Access. Enter your service account email in the box labeled "New principals" and assign the following four roles: `Storage Admin`, `Storage Object Admin`, `Storage Object Creator`, `Storage Object Viewer`
 
 ### Config
 
-- modify the config as necessary, such as env layers
+- modify the config as necessary, such as environmental layers and the names of the bucket subdirectories
 
 ### Database
 
-- ensure input database meets the requirements such as table and attribute names
+Ensure input database meets the following requirements:
+
+- GPS event table is called "event"
+- latitude and logitude are in degrees and called "lat" and "lon"
+- timestamps are all in consistent format "%Y-%m-%d %H:%M:%S" and attrbiute is called "timestamp"
+  - HH:MM:SS is not necessary to include, but if timestamps lack the time component then they will be appended with 00:00:00
+- boolean attrbiute `is_death_centroid` 
+- datetime attribute `final_gps_location_datetime` (can drop this prior to annotation next time)
+- date attribute `final_gps_location_date` (can drop this prior to annotation next time)
+
 
 ### Run container
 
