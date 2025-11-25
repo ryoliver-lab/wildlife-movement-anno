@@ -7,9 +7,9 @@
   "paths": {
     "conda_env": "anno_env",
     "wd": "/app",
-    "db": "/app/data/input.db",
-    "input_dir": "ingest_gee_mortality_testing",
-    "output_dir": "annotated_mortality_testing",
+    "db": "/app/data/mortality_20251104.db",
+    "input_dir": "ingest_gee_mortality",
+    "output_dir": "annotated_mortality",
     "key_file": "/app/covid-mvmnt-2024-key-file.json",
     "genera_path": "/app/ctfs/genus.txt",
     "csvP": "/app/gee_data/csvs_gee_ingest",
@@ -35,25 +35,25 @@
         "name": "MODIS/MOD09GA_006_NDVI",
         "band": "NDVI",
         "colname": "ndvi",
-        "run": 0
+        "run": 1
       },
       {
         "name": "COPERNICUS/DEM/GLO30",
         "band": "DEM",
         "colname": "elev",
-        "run": 0
+        "run": 1
       },
       {
         "name": "ECMWF/ERA5/DAILY",
         "band": "total_precipitation",
         "colname": "precip",
-        "run": 0
+        "run": 1
       },
       {
         "name": "projects/HII/v1/hii",
         "band": "hii",
         "colname": "hfp",
-        "run": 0
+        "run": 1
       }
     ]
   }

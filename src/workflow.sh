@@ -70,7 +70,7 @@ export groupSize=$(python3 -c "import json; print(json.load(open('config.json'))
 bash ./gee_ingest.sh trial_1 $geePtsP $gcsInURL $csvP $groupSize
 
 # check for running or queued ingest tasks at an interval, units = seconds
-checkInterval=10
+checkInterval=600
 
 while [ $(earthengine --service_account_file="$sak" task list | grep -e "RUNNING" -e "READY" | wc -l) -gt 0 ]; do
     echo "Tasks still running or queued at $(date)"
@@ -84,7 +84,7 @@ chmod +x gee_anno.py
 bash ./anno_gee.sh $geePtsP $gcsOutP 
 
 # check for running or queued annotation tasks
-checkInterval=300
+checkInterval=600
 
 while [ $(earthengine --service_account_file="$sak" task list | grep -e "RUNNING" -e "READY" | wc -l) -gt 0 ]; do
     echo "Tasks still running or queued at $(date)"
@@ -121,7 +121,5 @@ sqlite3 $db "DELETE FROM event WHERE is_death_centroid = 1;"
 # and are no longer needed. Note that final GPS date/times for events are 
 # stored in the animal metadata table
 sqlite3 $db "ALTER TABLE event DROP COLUMN is_death_centroid;"
-sqlite3 $db "ALTER TABLE event DROP COLUMN final_gps_location_date;"
-sqlite3 $db "ALTER TABLE event DROP COLUMN final_gps_location_datetime;"
 sqlite3 $db "ALTER TABLE death_centroids DROP COLUMN time_to_death;"
 sqlite3 $db "ALTER TABLE death_centroids RENAME COLUMN timestamp TO death_datetime;"
