@@ -142,6 +142,15 @@ for group in groups:
   # for testing:
   # group = 0
 
+  # set up service account credentials
+  # (keep inside loop bc tasks have long runtimes, so refresh each iteration)
+  credentials = ee.ServiceAccountCredentials(
+      email = sa_email,
+      key_file = config['paths']['key_file']
+  )
+  ee.Initialize(credentials)
+  time.sleep(10)
+
   ptsGrp = pts.filter(ee.Filter.eq('grp', group))
   # Make sure there are points in the group. Can result in 0 records if .group
   # does not exist in the dataset.

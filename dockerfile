@@ -1,6 +1,6 @@
 # base image for miniconda3
 # TODO: replace latest with a version?
-FROM continuumio/miniconda3:latest
+FROM continuumio/miniconda3@sha256:4a2425c3ca891633e5a27280120f3fb6d5960a0f509b7594632cdd5bb8cbaea8
 
 # install bash + required tools for GCloud SDK
 RUN apt-get update && \

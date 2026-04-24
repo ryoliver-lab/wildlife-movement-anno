@@ -7,7 +7,7 @@
   "paths": {
     "conda_env": "anno_env",
     "wd": "/app",
-    "db": "/app/data/mortality_20251104.db",
+    "db": "/app/data/mortality_0422.db",
     "input_dir": "ingest_gee_mortality",
     "output_dir": "annotated_mortality",
     "key_file": "/app/covid-mvmnt-2024-key-file.json",
