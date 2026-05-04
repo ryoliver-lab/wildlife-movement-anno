@@ -26,9 +26,15 @@
 
     "collections": [
       {
-        "name": "ECMWF/ERA5/DAILY",
-        "band": "maximum_2m_air_temperature",
-        "colname": "tmax",
+        "name": "ECMWF/ERA5_LAND/DAILY_AGGR",
+        "band": "temperature_2m_max",
+        "colname": "tmax_daily",
+        "run": 1
+      },
+      {
+        "name": "ECMWF/ERA5_LAND/HOURLY",
+        "band": "temperature_2m",
+        "colname": "temp_hourly",
         "run": 1
       },
       {
@@ -44,9 +50,15 @@
         "run": 1
       },
       {
-        "name": "ECMWF/ERA5/DAILY",
-        "band": "total_precipitation",
-        "colname": "precip",
+        "name": "ECMWF/ERA5_LAND/DAILY_AGGR",
+        "band": "total_precipitation_sum",
+        "colname": "precip_daily",
+        "run": 1
+      },
+      {
+        "name": "ECMWF/ERA5_LAND/HOURLY",
+        "band": "total_precipitation_hourly",
+        "colname": "precip_hourly",
         "run": 1
       },
       {
