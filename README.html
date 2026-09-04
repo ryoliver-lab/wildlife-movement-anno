@@ -401,19 +401,36 @@ names of the bucket subdirectories</li>
 <p>Ensure input database meets the following requirements:</p>
 <ul>
 <li>GPS event table is called “event”</li>
-<li>latitude and logitude are in degrees and called “lat” and “lon”</li>
+<li>latitude and longitude are in degrees and called <code>lat</code>
+and <code>lon</code></li>
 <li>timestamps are all in consistent format “%Y-%m-%d %H:%M:%S” and
-attrbiute is called “timestamp”
+attribute is called <code>timestamp</code>
 <ul>
 <li>HH:MM:SS is not necessary to include, but if timestamps lack the
 time component then they will be appended with 00:00:00</li>
 </ul></li>
-<li>boolean attrbiute <code>is_death_centroid</code></li>
-<li>datetime attribute <code>final_gps_location_datetime</code> (can
-drop this prior to annotation next time)</li>
-<li>date attribute <code>final_gps_location_date</code> (can drop this
-prior to annotation next time)</li>
+<li>boolean attribute <code>is_death_centroid</code> (all values to F if
+you did not specifically calcuate death centroids as we do in the
+<code>mortality-db</code> repo)</li>
+<li>datetime attribute <code>anno_hfp_datetime</code> used for HII layer
+(see table) in the same format as <code>timestamp</code> but with
+correct year of event and day and month being January 1, and time can be
+either the correct time of the event or just 00:00:00 since none of our
+layers depend on time of day</li>
+<li>attribute <code>event_id</code> which is flexible but by default is
+a random numeric ID composed of enough digits for each value to be
+unique</li>
+<li>character column <code>genus</code> (used for separating many points
+into chunks to submit to GEE)</li>
 </ul>
+</div>
+<div id="build-docker-image" class="section level3">
+<h3>Build Docker image</h3>
+<p>It is necessary to rebuilt the image anytime you modify the config or
+other files, so essentially every time you execute a new annotation
+run.</p>
+<pre><code>docker build -t anno-wf:latest .
+</code></pre>
 </div>
 <div id="run-container" class="section level3">
 <h3>Run container</h3>
@@ -432,7 +449,7 @@ account name, and assets filepath.
     -v /path/covid-mvmnt-2024-key-file.json:/app/key-file.json:ro \
     -v /path/gee_sa.txt:/app/gee_sa.txt:ro \
     -v /path/gee_af.txt:/app/gee_af.txt:ro \
-    anno-wf:latest</code></pre>
+    anno-wf:latest &gt; ./anno_output.txt 2&gt;&amp;1</code></pre>
 </div>
 <div id="system-requirements" class="section level3">
 <h3>System Requirements</h3>
@@ -540,13 +557,39 @@ end to the image collection.</td>
 </table>
 </div>
 <div id="notes" class="section level3">
-<h3>Notes:</h3>
-<ul>
-<li>If we expand this docker image to use R as well to include analysis
-scripts, the image becomes larger with a differnt base. We need to use R
-with tidyverse and then control R package versions afterwards with
-<code>install.packages</code></li>
-</ul>
+<h3>Notes</h3>
+<ol style="list-style-type: decimal">
+<li>In <code>workflow.sh</code> the following code should appear as many
+times as there are annotation layers in the config:</li>
+</ol>
+<pre><code>col0=$(python3 -c &quot;import json; collection=json.load(open(&#39;config.json&#39;))[&#39;gee&#39;][&#39;collections&#39;][0]; print(collection[&#39;colname&#39;] if collection.get(&#39;run&#39;) == 1 else &#39;&#39;)&quot;)
+[ -n &quot;$col0&quot; ] &amp;&amp; sqlite3 $db &quot;alter table event add column ${col0} REAL;&quot;
+</code></pre>
+<p>With the number representing the n layer (indexing starts at 0). If
+there are too many of these lines in the bash script compared to layers
+in the config, the bash output will throw an error, but it just means it
+could not find n layer to add, not that anything went wrong with the
+annotation layers that were present in the config. If there are too few
+lines in the bash script compared to layers in the config, the
+annotations won’t be added to the event table.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>At the end of <code>workflow.sh</code> after all the annotation has
+completed and been merged into the event table, there are a few SQLite
+commands that do some housekeeping for attributes that are specific to
+our mortality workflow. If the columns referenced are not relevant, such
+as <code>time_to_death</code>, just remove those lines. Similarly to the
+first note, these will throw errors if the columns do not exist but do
+not indicate anything went awry with the annotation.</li>
+</ol>
+</div>
+<div id="future-development" class="section level3">
+<h3>Future development</h3>
+<p>If we expand this docker image to use R as well to include analysis
+scripts, the image becomes larger with a different base. We need to use
+R with tidyverse and then control R package versions afterwards with
+<code>install.packages</code></p>
+<p>Please open an issue if you have an idea for how this repository
+could be improved.</p>
 </div>
 </div>
 
