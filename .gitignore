@@ -73,5 +73,5 @@ docker-compose.override.yml
 docker-compose.local.yml
 
 data/
-
+anno_output*.txt
 
