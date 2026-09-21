@@ -596,6 +596,23 @@ first note, these will throw errors if the columns do not exist but do
 not indicate anything went awry with the annotation.</li>
 </ol>
 </div>
+<div id="creating-your-own-gee-assets" class="section level3">
+<h3>Creating your own GEE Assets</h3>
+<p>You can upload rasters in COG format to and convert them to your own
+<code>ImageCollection</code> to use for annotation. The
+<code>ImageCollection</code> is an asset that includes the rasters
+themselves, which are also assets. While the
+<code>ImageCollection</code> is not required to have properties such as
+temporal ranges, each asset within the collection must have temporal
+properties and a suitable bandname. This was done for machine learning
+human footprint <code>ImageCollection</code> described above. <a href="https://github.com/ryoliver-lab/wildlife-movement-anno/issues/6">Issue#6</a>
+describes how we may make this a more common part of the annotation
+workflow and includes code for repeating the process.</p>
+<p>Once an asset is created that you would like to share, you can make
+it public for all users or share it specifically with another service
+account. In the <a href="https://code.earthengine.google.com/">Code
+Editor</a>, select the share icon for the asset in the left pane.</p>
+</div>
 <div id="future-development" class="section level3">
 <h3>Future development</h3>
 <p>If we expand this docker image to use R as well to include analysis

@@ -105,6 +105,12 @@ With the number representing the n layer (indexing starts at 0). If there are to
 
 2. At the end of `workflow.sh` after all the annotation has completed and been merged into the event table, there are a few SQLite commands that do some housekeeping for attributes that are specific to our mortality workflow. If the columns referenced are not relevant, such as `time_to_death`, just remove those lines. Similarly to the first note, these will throw errors if the columns do not exist but do not indicate anything went awry with the annotation.  
 
+### Creating your own GEE Assets
+
+You can upload rasters in COG format to and convert them to your own `ImageCollection` to use for annotation. The `ImageCollection` is an asset that includes the rasters themselves, which are also assets. While the `ImageCollection` is not required to have properties such as temporal ranges, each asset within the collection must have temporal properties and a suitable bandname. This was done for machine learning human footprint `ImageCollection` described above. [Issue#6](https://github.com/ryoliver-lab/wildlife-movement-anno/issues/6) describes how we may make this a more common part of the annotation workflow and includes code for repeating the process.
+
+Once an asset is created that you would like to share, you can make it public for all users or share it specifically with another service account. In the [Code Editor](https://code.earthengine.google.com/), select the share icon for the asset in the left pane.
+
 ### Future development
 
 If we expand this docker image to use R as well to include analysis scripts, the image becomes larger with a different base. We need to use R with tidyverse and then control R package versions afterwards with `install.packages`
