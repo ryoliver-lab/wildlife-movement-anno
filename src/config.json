@@ -7,7 +7,7 @@
   "paths": {
     "conda_env": "anno_env",
     "wd": "/app",
-    "db": "/app/data/mortality_0422.db",
+    "db": "/app/data/mortality_0927.db",
     "input_dir": "ingest_gee_mortality",
     "output_dir": "annotated_mortality",
     "key_file": "/app/covid-mvmnt-2024-key-file.json",
@@ -26,15 +26,9 @@
 
     "collections": [
       {
-        "name": "ECMWF/ERA5_LAND/DAILY_AGGR",
-        "band": "temperature_2m_max",
-        "colname": "tmax_daily",
-        "run": 1
-      },
-      {
         "name": "ECMWF/ERA5_LAND/HOURLY",
         "band": "temperature_2m",
-        "colname": "temp_hourly",
+        "colname": "temp",
         "run": 1
       },
       {
@@ -50,21 +44,15 @@
         "run": 1
       },
       {
-        "name": "ECMWF/ERA5_LAND/DAILY_AGGR",
-        "band": "total_precipitation_sum",
-        "colname": "precip_daily",
-        "run": 1
-      },
-      {
         "name": "ECMWF/ERA5_LAND/HOURLY",
         "band": "total_precipitation_hourly",
-        "colname": "precip_hourly",
+        "colname": "precip",
         "run": 1
       },
       {
-        "name": "projects/HII/v1/hii",
-        "band": "hii",
-        "colname": "hfp",
+        "name": "projects/covid-mvmnt-2024-440720/assets/ml_hfp_cogs",
+        "band": "mlHFI_prediction",
+        "colname": "ml_hfp",
         "run": 1
       }
     ]

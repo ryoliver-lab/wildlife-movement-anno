@@ -83,6 +83,7 @@ def add_milli(f):
   f = f.set(_colMillis, mil)
   return(f)
 
+# For WCS human impact index ImageCollection (not ML HFP):
 # function to add new property system:time_end to HFP images
 # since each image represents 01/01-12-31 of each year,
 # calcuate the milliseconds for 12/31 of the image's year
@@ -129,7 +130,7 @@ else:
     sys.exit(f"Invalid asset type: {assetType}")
 
 # define groups based on number of rows
-# 'grp' is the column name assigned by the SQL command in gee_ingest.sh
+# 'grp' is the integer groupSize assigned by the config
 maxgrp = pts.aggregate_max('grp').getInfo()
 groups = range(maxgrp+1) # need +1 because indexing starts at 0
 if(len(groups)>1):
@@ -179,7 +180,7 @@ for group in groups:
     else:
       layerReducedToBounds = layer.filterBounds(ptsGrpBounds)
        
-      # if annotating layer HFP, use _colTimestamp_hfp, otherwise normal timestamp
+      # if annotating layer WCS HFP, use _colTimestamp_hfp, otherwise normal timestamp
       if _col_name == "hfp":
         _timestamp = _colTimestamp_hfp
       else:
@@ -216,6 +217,8 @@ for group in groups:
     sys.exit(f"Invalid asset type: {assetType}")
   
   # sort by event ID and remove rows with NA values
+  # note: these will still show up in the DB as NA (since the join with the event DF 
+  # will not include these event IDs) but may as well not save these rows to the CSV...
   anno = anno.sort('anno_id').filter(ee.Filter.notNull([_col_name]))
   
   # remove negative erroneous values
