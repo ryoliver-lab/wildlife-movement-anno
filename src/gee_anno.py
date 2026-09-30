@@ -178,8 +178,6 @@ for group in groups:
       anno = select_band(layerReducedToBounds)
 
     else:
-      layerReducedToBounds = layer.filterBounds(ptsGrpBounds)
-       
       # if annotating layer WCS HFP, use _colTimestamp_hfp, otherwise normal timestamp
       if _col_name == "hfp":
         _timestamp = _colTimestamp_hfp
@@ -188,8 +186,14 @@ for group in groups:
       
       ptsGrp = ptsGrp.map(add_milli)
 
+      min_ms = ee.Number(ptsGrp.aggregate_min(_colMillis)).subtract(3600000)
+      max_ms = ee.Number(ptsGrp.aggregate_max(_colMillis)).add(3600000)
+      layerReducedToBounds = layer.filterBounds(ptsGrpBounds).filterDate(min_ms, max_ms)
+
       if _col_name == "hfp":
         # add property for time end
+        # no need to add the filter for the min_ms & max_ms cause there are only 20 annual
+        # images so this layer is already fast
         layerReducedToBounds = layerReducedToBounds.map(add_end_prop)
 
       # Define a filter operation to keep only the ImageCollection images with 

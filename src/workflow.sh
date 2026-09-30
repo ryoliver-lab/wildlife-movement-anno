@@ -84,7 +84,7 @@ chmod +x gee_anno.py
 bash ./anno_gee.sh $geePtsP $gcsOutP 
 
 # check for running or queued annotation tasks
-checkInterval=600
+checkInterval=3600
 
 while [ $(earthengine --service_account_file="$sak" task list | grep -e "RUNNING" -e "READY" | wc -l) -gt 0 ]; do
     echo "Tasks still running or queued at $(date)"
