@@ -83,7 +83,7 @@ def add_milli(f):
   f = f.set(_colMillis, mil)
   return(f)
 
-# For WCS human impact index ImageCollection (not ML HFP):
+# For WCS human impact index ImageCollection (not ml_hfp):
 # function to add new property system:time_end to HFP images
 # since each image represents 01/01-12-31 of each year,
 # calcuate the milliseconds for 12/31 of the image's year
@@ -144,7 +144,7 @@ for group in groups:
   # group = 0
 
   # set up service account credentials
-  # (keep inside loop bc tasks have long runtimes, so refresh each iteration)
+  # (keep inside loop bc tasks cna have long runtimes, so refresh each iteration)
   credentials = ee.ServiceAccountCredentials(
       email = sa_email,
       key_file = config['paths']['key_file']
@@ -186,13 +186,13 @@ for group in groups:
       
       ptsGrp = ptsGrp.map(add_milli)
 
-      # if processing hourly layers, which we only do for temp and precip,
+      # If processing hourly layers, which we only do for temp and precip,
       # reduce the amount of images compared to each location by filtering to only hourly 
-      # images 2 hours prior to min time_start and 2 hours after the max time_end of the 
-      # event chunk (7,200,000 milliseconds)
+      # images 2 hours (7,200,000 milliseconds) prior to min time_start and 2 hours after the max 
+      # time_end of the chunk of event points. Could use 1 hour but using safer buffer.
       # Note that we do NOT do this for ImageCollections with coarser (like annual) temporal res
       # bc it filters out images that do need to be compared to the events, and those tasks 
-      # are already fast so no need to reduce amount of images compared
+      # are already fast so no need to reduce amount of images compared.
       if _col_name in ("temp", "precip"):
         min_ms = ee.Number(ptsGrp.aggregate_min(_colMillis)).subtract(7200000)
         max_ms = ee.Number(ptsGrp.aggregate_max(_colMillis)).add(7200000)
@@ -201,8 +201,8 @@ for group in groups:
         layerReducedToBounds = layer.filterBounds(ptsGrpBounds)
 
       if _col_name == "hfp":
-        # add property for time end
-        # no need to add the filter for the min_ms & max_ms cause there are only 20 annual
+        # add property for time_end
+        # no need to add the filter for the min_ms & max_ms cause there are only ~20 annual
         # images so this layer is already fast
         layerReducedToBounds = layerReducedToBounds.map(add_end_prop)
 
@@ -230,12 +230,12 @@ for group in groups:
   else:
     sys.exit(f"Invalid asset type: {assetType}")
   
-  # sort by event ID and remove rows with NA values
-  # note: these will still show up in the DB as NA (since the join with the event DF 
-  # will not include these event IDs) but may as well not save these rows to the CSV...
+  # sort by event ID and remove rows with NULL values
+  # note: these will still show up in the DB as NA (since the join later with the existing 
+  # event table will not include these event IDs) but may as well not save these rows to CSV...
   anno = anno.sort('anno_id').filter(ee.Filter.notNull([_col_name]))
   
-  # remove negative erroneous values
+  # remove negative erroneous values (0's are retained)
   if _col_name != "ndvi":
     anno = anno.filter(ee.Filter.gte(_col_name, 0))
   

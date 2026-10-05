@@ -91,11 +91,13 @@ do
 
   
   # Earthengine can't do annotation with tasks greater than 1e6 points
-  # So need to break them up. row_number returns 1..n. Subtract 1 so that the
-  # resulting number of groups will be correct. Since groupSize is an integer,
+  # So need to break them up to that value at most. row_number returns 1..n. 
+  # Subtract 1 so that the resulting number of groups will be correct. Since 
+  # groupSize is an integer defined in the config,
   # the result will be cast to an integer (equivilant to floor() operation)
   
-  # Calculates groups according to lon, lat, timestamp and also sorts the final dataset
+  # Calculates groups according to timestamp, lon, lat and also sorts the final dataset
+  # (always retain timestamp first for faster processing)
   sql="select event_id as anno_id, lon, lat,
     strftime('%Y-%m-%dT%H:%M:%SZ', timestamp) as timestamp,
     strftime('%Y-%m-%dT%H:%M:%SZ', anno_hfp_datetime) as timestamp_hfp,
@@ -103,18 +105,8 @@ do
     from event 
     where genus = '${entId}'
     order by timestamp, lon, lat;"
-    
-#     inner join event e on f.event_id = e.event_id
-# 	  inner join study study_id on seg.pop_id = pop.pop_id
-#     where pop.pop_id = $entId and pop.ses_id = $sesid
-# 	order by anno_grp, lon, lat"
-
-    # inner join forage_seg fs on f.fs_id = fs.fs_id 
-    # inner join segment seg on fs.seg_id = seg.seg_id
  
   echo Extracting data...
-
-  #echo $sql
   
   /usr/bin/env sqlite3 -header -csv $db "$sql;" > $csv
   
@@ -136,6 +128,7 @@ do
   gcloud storage cp -r "$csv" "$gcsCSV"
 
   #---- Import file into GEE
+  # --force ensures overwrite of any old asset with the same name
   echo Starting GEE import task...
   earthengine --service_account_file="$sak" upload table  --asset_id $geePts $gcsCSV --x_column lon --y_column lat --force
 

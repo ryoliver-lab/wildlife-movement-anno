@@ -44,15 +44,21 @@
         "run": 1
       },
       {
-        "name": "COPERNICUS/DEM/GLO30",
-        "band": "DEM",
-        "colname": "elev",
-        "run": 1
-      },
-      {
         "name": "ECMWF/ERA5_LAND/HOURLY",
         "band": "total_precipitation_hourly",
         "colname": "precip",
+        "run": 1
+      },
+      {
+        "name": "projects/HII/v1/hii",
+        "band": "hii",
+        "colname": "hfp",
+        "run": 1
+      },
+      {
+        "name": "COPERNICUS/DEM/GLO30_2024_1",
+        "band": "DEM",
+        "colname": "elev",
         "run": 1
       }
     ]

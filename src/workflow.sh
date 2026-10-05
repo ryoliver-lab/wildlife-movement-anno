@@ -110,6 +110,9 @@ col3=$(python3 -c "import json; collection=json.load(open('config.json'))['gee']
 col4=$(python3 -c "import json; collection=json.load(open('config.json'))['gee']['collections'][4]; print(collection['colname'] if collection.get('run') == 1 else '')")
 [ -n "$col4" ] && sqlite3 $db "alter table event add column ${col4} REAL;"
 
+col4=$(python3 -c "import json; collection=json.load(open('config.json'))['gee']['collections'][4]; print(collection['colname'] if collection.get('run') == 1 else '')")
+[ -n "$col5" ] && sqlite3 $db "alter table event add column ${col4} REAL;"
+
 # populate the database event table with the annotations
 bash ./import_anno.sh $gcsOutURL $annoP $db --table event
 

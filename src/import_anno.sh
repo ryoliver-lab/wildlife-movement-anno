@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #----
-#---- Downloads annotated data from GCS and imports into local mosey database
+#---- Downloads annotated data from GCS and imports into local database
 #----
 
 #eval "$(docopts -h - : "$@" <<EOF
@@ -15,19 +15,6 @@
 #import_anno.sh 0.1
 #EOF
 #)"
-
-
-#TODO: make a test to make sure group subsetting is happening correctly
-#   could set group size to small value, use a small dataset, make sure values are updated from both 
-#   groups
-
-# pd=~/projects/ms2
-# wd=$pd/analysis/poc/mosey_env/mosey_env1
-# cd $wd
-# 
-# gcsOutURL=gs://mol-playground/benc/projects/ms2/poc/mosey_env/mosey_env1/anno #This is the url to the output folder (includes bucket)
-# annoP=data/anno
-# db=$pd/analysis/main/data/mosey.db
 
 # gcsOutURL=${argv[0]}
 # annoP=${argv[1]}
@@ -120,7 +107,6 @@ do
 		#check here if file exists and skip if it doesn't exist
 		#https://stackoverflow.com/questions/48676712/how-to-check-if-any-given-object-exist-in-google-cloud-storage-bucket-through-ba
 		
-		#gsutil ls $gcsOutURL/${annoN}_*.csv
 		#It seems zsh attemps to expand the * before sending to gsutil.
 		# Wrap this in '' so that shell will not expand it
 		gcloud storage ls "$gcsOutURL/${annoN}/${annoN}_*.csv"
