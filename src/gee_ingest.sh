@@ -50,7 +50,7 @@ outP=$4 # The path to the local folder that holds CVSs for import to GCS
 groupSize=$5
 
 # Set defaults for optional parameters
-[[ -z "$db" ]] && db=$wd/data/database/mosey_mod.db
+[[ -z "$db" ]] && db=$wd/data/database/mortality.db
 
 # Local parameters
 # groupSize= # Pass in as optional argument
@@ -96,19 +96,12 @@ do
   # the result will be cast to an integer (equivilant to floor() operation)
   
   # Calculates groups according to lon, lat, timestamp and also sorts the final dataset
-  sql="with t as (
-    select event_id as anno_id, lon, lat,
-        strftime('%Y-%m-%dT%H:%M:%SZ', anno_hfp_datetime) as timestamp_hfp,
-        strftime('%Y-%m-%dT%H:%M:%SZ', timestamp) as timestamp,
-        strftime('%Y-%m', timestamp) as mo,
-    	(row_number() over (partition by strftime('%Y-%m', timestamp)
-                            order by timestamp, lon, lat)-1)/$groupSize as sub
-      from event
-      where genus = '${entId}'
-    )
-    select anno_id, lon, lat, timestamp,
-      dense_rank() over (order by mo, sub) - 1 as grp
-    from t
+  sql="select event_id as anno_id, lon, lat,
+    strftime('%Y-%m-%dT%H:%M:%SZ', timestamp) as timestamp,
+    strftime('%Y-%m-%dT%H:%M:%SZ', anno_hfp_datetime) as timestamp_hfp,
+    	(row_number() over (order by timestamp, lon, lat)-1)/$groupSize as grp 
+    from event 
+    where genus = '${entId}'
     order by timestamp, lon, lat;"
     
 #     inner join event e on f.event_id = e.event_id

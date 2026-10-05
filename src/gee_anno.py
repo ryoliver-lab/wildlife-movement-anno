@@ -186,9 +186,19 @@ for group in groups:
       
       ptsGrp = ptsGrp.map(add_milli)
 
-      min_ms = ee.Number(ptsGrp.aggregate_min(_colMillis)).subtract(3600000)
-      max_ms = ee.Number(ptsGrp.aggregate_max(_colMillis)).add(3600000)
-      layerReducedToBounds = layer.filterBounds(ptsGrpBounds).filterDate(min_ms, max_ms)
+      # if processing hourly layers, which we only do for temp and precip,
+      # reduce the amount of images compared to each location by filtering to only hourly 
+      # images 2 hours prior to min time_start and 2 hours after the max time_end of the 
+      # event chunk (7,200,000 milliseconds)
+      # Note that we do NOT do this for ImageCollections with coarser (like annual) temporal res
+      # bc it filters out images that do need to be compared to the events, and those tasks 
+      # are already fast so no need to reduce amount of images compared
+      if _col_name in ("temp", "precip"):
+        min_ms = ee.Number(ptsGrp.aggregate_min(_colMillis)).subtract(7200000)
+        max_ms = ee.Number(ptsGrp.aggregate_max(_colMillis)).add(7200000)
+        layerReducedToBounds = layer.filterBounds(ptsGrpBounds).filterDate(min_ms, max_ms)
+      else:
+        layerReducedToBounds = layer.filterBounds(ptsGrpBounds)
 
       if _col_name == "hfp":
         # add property for time end
