@@ -61,6 +61,7 @@ _colTimestamp_hfp = config['gee']['_colTimestamp_hfp']
 def select_band(img):
   img = ee.Image(img).select([_band])
   
+  # do not include temp_lt_avg here because it is an Image so select_band is not called for it
   if _col_name == "elev":
      fc = ptsGrp
   else:
@@ -144,7 +145,7 @@ for group in groups:
   # group = 0
 
   # set up service account credentials
-  # (keep inside loop bc tasks cna have long runtimes, so refresh each iteration)
+  # (keep inside loop bc tasks can have long runtimes, so refresh each iteration)
   credentials = ee.ServiceAccountCredentials(
       email = sa_email,
       key_file = config['paths']['key_file']
@@ -157,13 +158,12 @@ for group in groups:
   # does not exist in the dataset.
   assert ptsGrp.size().getInfo() > 0, "No points in group. Cannot execute annotation."
 
-  if assetType == 'IMAGE':
+  if assetType == 'IMAGE': # example layer: temp_lt_avg
     # Note that the band is selected above, when loading the layer
     anno = layer.reduceRegions(
-      reducer = ee.Reducer.median().setOutputs([_col_name]),
+      reducer = ee.Reducer.first().setOutputs([_col_name]),
       collection = ptsGrp,
       scale = layer.projection().nominalScale()
-      #tileScale = 16 # inc to split up tiles more finely, reduce oom errors
     )
   elif assetType == 'IMAGE_COLLECTION':
     # define bounding box of points
@@ -171,7 +171,7 @@ for group in groups:
     
     # reduce bounds of layer in different ways depending on if
     # collection is a mosaic or a true imageCollection
-    if _col_name == "elev":
+    if _col_name == "elev": # do not include temp_lt_avg here bc it is an Image not ImageCollection
       layerReducedToBounds = layer.clip(ptsGrpBounds)
       # if annotating with mosaic layer, execute similar reduceRegions operation
       # as done for single image, but adjusted for mosaic
