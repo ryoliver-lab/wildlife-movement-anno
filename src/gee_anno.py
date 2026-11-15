@@ -61,7 +61,7 @@ _colTimestamp_hfp = config['gee']['_colTimestamp_hfp']
 def select_band(img):
   img = ee.Image(img).select([_band])
   
-  # do not include temp_lt_avg here because it is an Image so select_band is not called for it
+  # do not include temp_lt_avg or temp_lt_sd here bc these are Images so select_band is not called for it
   if _col_name == "elev":
      fc = ptsGrp
   else:
@@ -158,7 +158,7 @@ for group in groups:
   # does not exist in the dataset.
   assert ptsGrp.size().getInfo() > 0, "No points in group. Cannot execute annotation."
 
-  if assetType == 'IMAGE': # example layer: temp_lt_avg
+  if assetType == 'IMAGE': # examples: layer: temp_lt_avg, temp_lt_sd
     # Note that the band is selected above, when loading the layer
     anno = layer.reduceRegions(
       reducer = ee.Reducer.first().setOutputs([_col_name]),
@@ -171,7 +171,7 @@ for group in groups:
     
     # reduce bounds of layer in different ways depending on if
     # collection is a mosaic or a true imageCollection
-    if _col_name == "elev": # do not include temp_lt_avg here bc it is an Image not ImageCollection
+    if _col_name == "elev": # do not include temp_lt_avg or temp_lt_sd here bc these are Images not ImageCollections
       layerReducedToBounds = layer.clip(ptsGrpBounds)
       # if annotating with mosaic layer, execute similar reduceRegions operation
       # as done for single image, but adjusted for mosaic
